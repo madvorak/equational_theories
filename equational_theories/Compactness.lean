@@ -17,7 +17,7 @@ instance Ctx.hasSubset {α} : HasSubset (Ctx α) := Set.instHasSubset
 
 theorem foo (S T : Set Nat) : S ⊆ S ∪ T := Set.subset_union_left
 
-def derive.Weak {α} {Γ Δ : Ctx α}{E : MagmaLaw α}(inc : Γ ⊆ Δ) (h : Γ ⊢ E) :
+def derive.Weak {α} {Γ Δ : Ctx α} {E : MagmaLaw α} (inc : Γ ⊆ Δ) (h : Γ ⊢ E) :
     Δ ⊢ E := by
   cases h
   case Ax => apply derive.Ax; apply inc; trivial
@@ -27,7 +27,7 @@ def derive.Weak {α} {Γ Δ : Ctx α}{E : MagmaLaw α}(inc : Γ ⊆ Δ) (h : Γ 
   case Subst => apply derive.Subst ; apply derive.Weak <;> trivial
   case Cong => apply derive.Cong <;> apply derive.Weak <;> trivial
 
-def derive.getAxiomsEnough {α} [DecidableEq α] {Γ : Ctx α} {E : MagmaLaw α}(h : Γ ⊢ E) :
+def derive.getAxiomsEnough {α} [DecidableEq α] {Γ : Ctx α} {E : MagmaLaw α} (h : Γ ⊢ E) :
     ToCtx (derive.getAxioms h) ⊢ E := by
   cases h <;> simp [ToCtx, getAxioms]
   case Ax => constructor; trivial
@@ -43,7 +43,7 @@ def derive.getAxiomsEnough {α} [DecidableEq α] {Γ : Ctx α} {E : MagmaLaw α}
     · exact derive.Weak Set.subset_union_left (derive.getAxiomsEnough h₁)
     · exact derive.Weak Set.subset_union_right (derive.getAxiomsEnough h₂)
 
-def Compactness {α} [DecidableEq α] {Γ : Ctx α} {E : MagmaLaw α}(h : Γ ⊧ E) :
+def Compactness {α} [DecidableEq α] {Γ : Ctx α} {E : MagmaLaw α} (h : Γ ⊧ E) :
     ∃ (Δ : Finset (MagmaLaw α)), Nonempty <| ToCtx Δ ⊧ E := by
   have ⟨ h'' ⟩ := Completeness _ _ h
   refine ⟨(derive.getAxioms (h'')), ?_⟩
